@@ -6,6 +6,21 @@ import os
 
 st.set_page_config(page_title="Simple Finance App",page_icon="💰",layout="wide")
 
+category_file="categories.json"
+
+if "categories" not in st.session_state:
+    st.session_state.categories={
+        "Uncategorized": []
+    }
+
+if os.path.exists("category_file"):
+    with open("category_file","r") as f:
+        st.session_state.categories=json.loaf(f)
+
+def save_categories():
+    with open("category_file","w") as f:
+        json.dump(st.session_state.categories,f)
+
 def load_transcations(file):
     try:
         df=pd.read_csv(file)
