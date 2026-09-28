@@ -22,6 +22,22 @@ def save_categories():
     with open("category_file","w") as f:
         json.dump(st.session_state.categories,f)
 
+def categorize_transcations(df):
+    df["Category"]="Uncategorized"
+
+    for category, keywords in st.session.categories.items():
+        if category=="Uncategorized" or not keywords:
+            continue
+
+        lowered_keywords=[keyword.lower() for keyword in keywords]
+
+        for idx, row in df.iterrows():
+            details=row["Details"].lower().strip()
+            if details in lowered_keywords:
+                df.at[idx,"Category"]=category
+
+    return df
+
 def load_transcations(file):
     try:
         df=pd.read_csv(file)
@@ -29,7 +45,8 @@ def load_transcations(file):
         df["Amount"]=df["Amount"].str.replace(",","").astype(float)
         df["Date"]=pd.to_datetime(df["Date"],format="%d %b %Y")
 
-        st.write(df)
+        return categorize_transcations(df)
+
     except Exception as e:
         st.error(f"Error processing file: {str(e)}")
         return None
