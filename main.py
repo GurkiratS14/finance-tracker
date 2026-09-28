@@ -89,10 +89,10 @@ def main():
 
                 st.subheader("Your expenses")
                 edited_df=st.data_editor(
-                    st.session_state.debits_df[["Date","Details","Amount","Category"]]
+                    st.session_state.debits_df[["Date","Details","Amount","Category"]],
                     column_config={
-                        "Date":st.column_config.DateColumn("Date",format="DD/MM/YYYY")
-                        "Amount":st.column_config.NumberColumn("Amount",format="%.2f AED")
+                        "Date":st.column_config.DateColumn("Date",format="DD/MM/YYYY"),
+                        "Amount":st.column_config.NumberColumn("Amount",format="%.2f AED"),
                         "Category":st.column_config.SelectboxColumn(
                             "Category",
                             options=list(st.session_state.categories.keys())
